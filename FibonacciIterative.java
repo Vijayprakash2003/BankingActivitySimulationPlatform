@@ -17,7 +17,6 @@ public class FibonacciIterative {
             first = second;
             second = next;
         }
-
         sc.close();
     }
 }
