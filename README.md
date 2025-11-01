@@ -41,7 +41,7 @@ All transactions are logged in both **MySQL** and a **CSV file**.
 ## 💻 Sample Output
 ```bash
 ===== Welcome to the Mini Banking System =====
-Enter account holder name: Praneeth
+Enter account holder name: Ram
 Enter initial balance: 2500
 ✅ Account created successfully!
 Account Number: 3488819
