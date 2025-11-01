@@ -1,6 +1,49 @@
-🏁 Milestone 1 – Mini Banking System Demo
-💻 Program Execution Sample Output
+# 🏦 Banking Activity Simulation Platform  
 
+A simple banking system built in **Java** with **MySQL database integration**.  
+This project simulates basic banking operations such as **account creation, deposit, withdrawal, and fund transfer**.  
+All transactions are logged in both **MySQL** and a **CSV file** for verification and persistence.  
+
+---
+
+## 🚀 Features  
+
+- 🔢 **Auto-generated Account Number** (numeric only)  
+- 🧾 **Unique Transaction ID** generated for every operation  
+- 💰 **Deposit, Withdraw, and Transfer** between accounts  
+- ✅ **Input validation** (no numbers in names, no negative amounts)  
+- ⚠️ **Exception handling** for invalid inputs  
+- 🧮 **Real-time updates** in MySQL and transaction CSV log  
+
+---
+
+## 🗂️ Database Tables  
+
+### 🧾 **accounts**
+
+| Column Name    | Type         | Description               |
+|----------------|--------------|---------------------------|
+| account_number | VARCHAR(20)  | Unique account ID         |
+| holder_name    | VARCHAR(50)  | Account holder name       |
+| balance        | DECIMAL(15,2)| Current balance           |
+| created_at     | DATETIME     | Account creation date     |
+
+### 🧾 **transactions**
+
+| Column Name    | Type         | Description                           |
+|----------------|--------------|---------------------------------------|
+| transaction_id | VARCHAR(20)  | Unique transaction ID                 |
+| type           | VARCHAR(20)  | CREATE / DEPOSIT / WITHDRAW / TRANSFER|
+| from_account   | VARCHAR(20)  | Sender account number                 |
+| to_account     | VARCHAR(20)  | Receiver account number               |
+| amount         | DECIMAL(15,2)| Transaction amount                    |
+| txn_time       | DATETIME     | Time of transaction                   |
+
+---
+
+## 🏁 Milestone 1 – Mini Banking System Demo  
+
+### 💻 Program Execution Sample Output  
 ✅ MySQL JDBC Driver loaded in AccountManager.
 MySQL JDBC Driver loaded successfully!
 
@@ -51,6 +94,7 @@ Account Number: B2012 | Name: Prakash | Balance: ₹6000.00
 Enter your choice: 6
 🏦 Exiting... Check 'transactions.csv' and database for logs.
 
+---
 🛠️ Technologies Used
 Technology	Description
 ☕ Java (JDK 17)	Core programming language
@@ -58,7 +102,10 @@ Technology	Description
 🔗 JDBC	Java Database Connectivity
 💻 Eclipse / VS Code	IDE used for development
 🌐 Git & GitHub	Version control and repository hosting
+
+---
 👨‍💻 Author
 
 Vijay Prakash
 🎓 B.Tech Student | 💻 Java Developer
+
