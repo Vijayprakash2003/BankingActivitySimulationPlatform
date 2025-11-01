@@ -11,6 +11,16 @@ public class AccountDao {
     private String user = "root";
     private String pass = "Vijay@2011";
 
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("MySQL JDBC Driver loaded successfully!");
+        } catch (ClassNotFoundException e) {
+            System.err.println("MySQL JDBC Driver not found! Please check the JAR path.");
+            e.printStackTrace();
+        }
+    }
+
     // Create a new account
     public void createAccount(Account account) {
         String sql = "INSERT INTO accounts(account_number, holder_name, balance, created_at) VALUES (?, ?, ?, ?)";
