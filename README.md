@@ -55,7 +55,7 @@ Account Number: 3488819
 - Java (JDK 17)
 - MySQL
 - JDBC
-- IntelliJ / VS Code
+- Eclipse / VS Code
 - Git & GitHub
 
 ---
