@@ -10,17 +10,28 @@ public class Account {
     private String email;
     private BigDecimal balance;
     private Timestamp createdAt;
+    private String password;  // ✅ New field added
 
-    // NEW constructor with email and createdAt
-    public Account(String accountNumber, String holderName, BigDecimal balance, String email, Timestamp createdAt) {
+    // ✅ New constructor with password, email, and createdAt
+    public Account(String accountNumber, String holderName, BigDecimal balance, String email, String password, Timestamp createdAt) {
         this.accountNumber = accountNumber;
         this.holderName = holderName;
         this.balance = (balance != null) ? balance : BigDecimal.ZERO;
         this.email = email;
+        this.password = password;
         this.createdAt = createdAt;
     }
 
-    // Existing constructor without email
+    // ✅ Existing constructor with password but without email
+    public Account(String accountNumber, String holderName, BigDecimal balance, String password, Timestamp createdAt) {
+        this.accountNumber = accountNumber;
+        this.holderName = holderName;
+        this.balance = (balance != null) ? balance : BigDecimal.ZERO;
+        this.password = password;
+        this.createdAt = createdAt;
+    }
+
+    // Existing constructor (for compatibility)
     public Account(String accountNumber, String holderName, BigDecimal balance, Timestamp createdAt) {
         this.accountNumber = accountNumber;
         this.holderName = holderName;
@@ -56,6 +67,9 @@ public class Account {
 
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    public String getPassword() { return password; }     // ✅ getter
+    public void setPassword(String password) { this.password = password; }  // ✅ setter
 
     @Override
     public String toString() {
