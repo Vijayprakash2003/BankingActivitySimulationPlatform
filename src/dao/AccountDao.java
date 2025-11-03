@@ -2,28 +2,18 @@ package dao;
 
 import Account.Account;
 import java.sql.*;
-import java.util.*;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDao {
 
-    private String url = "jdbc:mysql://localhost:3306/banking_simulator";
-    private String user = "root";
-    private String pass = "Vijay@2011";
+    private final String url = "jdbc:mysql://localhost:3306/banking_simulator";
+    private final String user = "root";
+    private final String pass = "Vijay@2011";
 
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("MySQL JDBC Driver loaded successfully!");
-        } catch (ClassNotFoundException e) {
-            System.err.println("MySQL JDBC Driver not found! Please check the JAR path.");
-            e.printStackTrace();
-        }
-    }
-
-    // Create a new account
-    public void createAccount(Account account) {
-        String sql = "INSERT INTO accounts(account_number, holder_name, balance, created_at) VALUES (?, ?, ?, ?)";
+    // ✅ Create a new account (INSERT)
+    public int createAccount(Account account) {
+        String sql = "INSERT INTO accounts (account_number, holder_name, balance, created_at, password) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -31,35 +21,18 @@ public class AccountDao {
             stmt.setString(2, account.getHolderName());
             stmt.setBigDecimal(3, account.getBalance());
             stmt.setTimestamp(4, account.getCreatedAt());
+            stmt.setString(5, account.getPassword()); // ✅ Store password
 
-            int rows = stmt.executeUpdate();
-            System.out.println("Inserted " + rows + " row(s) into database.");
-
+            return stmt.executeUpdate(); // returns number of rows inserted
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
-    // Update account balance
-    public void updateAccount(Account account) {
-        String sql = "UPDATE accounts SET balance = ? WHERE account_number = ?";
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setBigDecimal(1, account.getBalance());
-            stmt.setString(2, account.getAccountNumber());
-
-            int rows = stmt.executeUpdate();
-            System.out.println("Updated " + rows + " row(s) in database.");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Find account by account number
+    // ✅ Find account by account number
     public Account findByAccountNumber(String accountNumber) {
-        String sql = "SELECT * FROM accounts WHERE account_number = ?";
+        String sql = "SELECT account_number, holder_name, balance, created_at FROM accounts WHERE account_number = ?";
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -67,40 +40,74 @@ public class AccountDao {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                String accNo = rs.getString("account_number");
                 String holderName = rs.getString("holder_name");
-                BigDecimal balance = rs.getBigDecimal("balance");
+                java.math.BigDecimal balance = rs.getBigDecimal("balance");
                 Timestamp createdAt = rs.getTimestamp("created_at");
 
-                return new Account(accountNumber, holderName, balance, createdAt);
+                return new Account(accNo, holderName, balance, createdAt);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    // List all accounts
+    // ✅ Update account balance in the database
+    public void updateAccount(Account account) {
+        String sql = "UPDATE accounts SET balance = ? WHERE account_number = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, pass);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setBigDecimal(1, account.getBalance());
+            stmt.setString(2, account.getAccountNumber());
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ✅ List all accounts
     public List<Account> listAllAccounts() {
         List<Account> accounts = new ArrayList<>();
-        String sql = "SELECT * FROM accounts";
+        String sql = "SELECT account_number, holder_name, balance, created_at FROM accounts";
 
         try (Connection conn = DriverManager.getConnection(url, user, pass);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                String accountNumber = rs.getString("account_number");
+                String accNo = rs.getString("account_number");
                 String holderName = rs.getString("holder_name");
-                BigDecimal balance = rs.getBigDecimal("balance");
+                java.math.BigDecimal balance = rs.getBigDecimal("balance");
                 Timestamp createdAt = rs.getTimestamp("created_at");
 
-                accounts.add(new Account(accountNumber, holderName, balance, createdAt));
+                Account account = new Account(accNo, holderName, balance, createdAt);
+                accounts.add(account);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return accounts;
+    }
+
+    // ✅ Validate user login (account_number + password)
+    public boolean validateUserLogin(String accountNumber, String password) {
+        String sql = "SELECT * FROM accounts WHERE account_number = ? AND password = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, pass);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, accountNumber);
+            stmt.setString(2, password);
+
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // ✅ true if login valid
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // ❌ invalid login
     }
 }
