@@ -1,53 +1,123 @@
-# 🏦 Banking Activity Simulation Platform  
+# 🏦 Banking Activity Simulation Platform
 
-A simple banking system built in **Java** with **MySQL database integration**.  
-This project simulates basic banking operations such as **account creation, deposit, withdrawal, and fund transfer**.  
-All transactions are logged in both **MySQL** and a **CSV file** for verification and persistence.  
+A simple **Java + MySQL + JDBC** based banking simulation system that demonstrates account creation, deposit, withdrawal, fund transfer, and transaction recording with admin and user authentication.
 
 ---
 
-## 🚀 Features  
-
-- 🔢 **Auto-generated Account Number** (numeric only)  
-- 🧾 **Unique Transaction ID** generated for every operation  
-- 💰 **Deposit, Withdraw, and Transfer** between accounts  
-- ✅ **Input validation** (no numbers in names, no negative amounts)  
-- ⚠️ **Exception handling** for invalid inputs  
-- 🧮 **Real-time updates** in MySQL and transaction CSV log  
-
----
-
-## 🗂️ Database Tables  
-
-### 🧾 **accounts**
-
-| Column Name    | Type         | Description               |
-|----------------|--------------|---------------------------|
-| account_number | VARCHAR(20)  | Unique account ID         |
-| holder_name    | VARCHAR(50)  | Account holder name       |
-| balance        | DECIMAL(15,2)| Current balance           |
-| created_at     | DATETIME     | Account creation date     |
-
-### 🧾 **transactions**
-
-| Column Name    | Type         | Description                           |
-|----------------|--------------|---------------------------------------|
-| transaction_id | VARCHAR(20)  | Unique transaction ID                 |
-| type           | VARCHAR(20)  | CREATE / DEPOSIT / WITHDRAW / TRANSFER|
-| from_account   | VARCHAR(20)  | Sender account number                 |
-| to_account     | VARCHAR(20)  | Receiver account number               |
-| amount         | DECIMAL(15,2)| Transaction amount                    |
-| txn_time       | DATETIME     | Time of transaction                   |
+## ⚙️ Technologies Used
+- **Java (JDK 17)** – Core programming logic  
+- **JDBC (Java Database Connectivity)** – Database interaction  
+- **MySQL** – Database for storing account and transaction data  
+- **Object-Oriented Programming (OOP)** – Encapsulation and modularity  
+- **DAO (Data Access Object)** – Layered architecture for clean database handling  
+- **Exception Handling** – Safe and stable runtime operations  
+- **CSV Logging (optional)** – Simple file-based record storage  
 
 ---
 
-## 🏁 Milestone 1 – Mini Banking System Demo  
-💻 Program Execution Sample Output
-<pre> ✅ MySQL JDBC Driver loaded in AccountManager. MySQL JDBC Driver loaded successfully! ===== Welcome to the Mini Banking System ===== ===== BANK MENU ===== 1. Create Account 2. Deposit 3. Withdraw 4. Transfer 5. List Accounts 6. Exit Enter your choice: 1 Enter account holder name: Vinod Enter initial balance: 3000 Inserted 1 row(s) into database. 🧾 Transaction ID: TXN4601A194 ✅ Account created successfully! Account Number: 9136922 Holder Name: Vinod Initial Balance: ₹3000 💡 Use this Account Number (9136922) for future transactions. ===== BANK MENU ===== Enter your choice: 2 Enter account number: 9136922 Enter amount to deposit: 500 🧾 Transaction ID: TXNBE899800 💰 Deposited ₹500 to 9136922. New balance: ₹3500.00 ===== BANK MENU ===== Enter your choice: 3 Enter account number: 9136922 Enter amount to withdraw: 400 🧾 Transaction ID: TXN04A84A3F 💸 Withdrew ₹400 from 9136922. New balance: ₹3100.00 ===== BANK MENU ===== Enter your choice: 5 Account Number: 1001 | Name: Vijay | Balance: ₹3000.00 Account Number: 9136922 | Name: Vinod | Balance: ₹3100.00 Account Number: 9194495 | Name: Mandeep | Balance: ₹2900.00 Account Number: 9614784 | Name: Nandhu | Balance: ₹3200.00 Account Number: B2012 | Name: Prakash | Balance: ₹6000.00 ===== BANK MENU ===== Enter your choice: 6 🏦 Exiting... Check 'transactions.csv' and database for logs. </pre>
+## 🌟 Features
+✅ Admin and User Login System  
+✅ Account Creation with Password  
+✅ Deposit and Withdraw Money  
+✅ Transfer Funds between Accounts  
+✅ Display All Accounts (Admin Only)  
+✅ Transaction Recording in Database  
+✅ Secure JDBC Connectivity with MySQL  
+✅ User-Friendly Console Interface  
 
 ---
-👨‍💻 Author
 
-Vijay Prakash
-🎓 B.Tech Student | 💻 Java Developer
+## 🗄️ Database Tables
 
+### 🧍 Accounts Table
+| Column Name      | Data Type     | Description                       |
+|------------------|---------------|-----------------------------------|
+| account_number   | VARCHAR(20)   | Unique account number (Primary Key) |
+| holder_name      | VARCHAR(100)  | Account holder’s name             |
+| balance          | DECIMAL(15,2) | Current account balance           |
+| password         | VARCHAR(100)  | Account password                  |
+
+---
+
+### 💸 Transactions Table
+| Column Name     | Data Type     | Description                              |
+|-----------------|---------------|------------------------------------------|
+| transaction_id  | VARCHAR(20)   | Unique ID for each transaction (Primary Key) |
+| type            | VARCHAR(20)   | Type of transaction (Deposit/Withdraw/Transfer) |
+| from_account    | VARCHAR(20)   | Sender account number                    |
+| to_account      | VARCHAR(20)   | Receiver account number (for transfers)  |
+| amount          | DECIMAL(15,2) | Transaction amount                       |
+| timestamp       | DATETIME      | Time of transaction                      |
+
+---
+
+### 👨‍💼 Admin Table
+| Column Name | Data Type     | Description             |
+|--------------|---------------|-------------------------|
+| username     | VARCHAR(50)   | Admin username (Primary Key) |
+| password     | VARCHAR(100)  | Admin password          |
+
+---
+
+## 🧾 Sample Console Output
+```
+===== Welcome to the Mini Banking System =====
+✅ MySQL JDBC Driver loaded successfully!
+
+Admin Login
+
+User Login
+
+Exit
+Enter your choice: 1
+Enter Admin Username: admin
+Enter Admin Password: admin123
+✅ Admin login successful!
+
+===== ADMIN MENU =====
+
+Create Account
+
+List All Accounts
+
+Exit
+Enter your choice: 1
+Enter account holder name: Vinod
+Enter initial balance: 3000
+Set a password for this account: vinod123
+✅ Account created successfully!
+
+Account Number: 10245
+Holder Name: Vinod
+Initial Balance: ₹3000
+Password: vinod123
+💡 Use this Account Number for future logins.
+
+===== USER LOGIN =====
+Enter Account Number: 10245
+Enter Password: vinod123
+✅ Login successful!
+
+View Account Details
+
+Deposit
+
+Withdraw
+
+Transfer
+
+Logout
+Enter your choice: 2
+Enter amount to deposit: 500
+✅ ₹500 deposited successfully. Current balance: ₹3500
+
+Transaction recorded successfully in transactions table.
+```
+
+---
+
+## 👨‍💻 Author
+**Vijay Prakash**  
+📧 Email: vijaysiddireddi@gmail.com  
+🚀 Project: *Banking Activity Simulation Platform (Java + MySQL + JDBC)*  
+💻 Made with ❤️ using Java & MySQL
